@@ -56,7 +56,8 @@ coffeeTable <- CoffeeAnalysisData %>%
             SD = sd(Aroma)) %>% 
   filter(n > 10)
 
-datatable(coffeeTable)
+datatable(coffeeTable)%>%
+     formatRound(columns=c('Average','SD'), digits=3)
 ```
 
 # Data Visualization

@@ -16,58 +16,44 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
-# choce the colums i need & clean data 
+# choice the columns i need & clean data 
 library(tidyverse)
 library(DT)
 library(sjPlot)
 library(sjmisc)
 library(sjlabelled)
 
-coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
-
-TestCoffeeData <- coffee_ratings %>% 
-  select(aroma,total_cup_points,flavor,acidity,sweetness,aftertaste)
+coffee_ratings <- read_csv('C://Users//ghadi//Documents//DataSet//merged_data_cleaned.csv')
+CoffeeData <- coffee_ratings %>% 
+  select(Aroma,Total.Cup.Points,Flavor,Acidity,Sweetness,Aftertaste)
 
 ```
 
 # Data Introduction
-
-talk about the data....
-
-[source](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-07/readme.md)
+This report is done on the coffee ratings dataset it contains reviews of 1312 arabica and 28 robusta coffee beans from the Coffee Quality Institute trained reviewers. The features include and used in this report are Aroma grade one of the quality measures and Country of Origin from farm metadata that tells us where the bean came from.
 
 What are the main research questions that you'll attempt to answer with this data?
 
 # Descriptive Statistics
 
-The mean and standard deviation of Aroma for each Country of origin.
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-coffeeTable <- TestCoffeeData %>% 
-  group_by(flavor) %>% 
-  summarise(n = length(flavor),
-            Average = mean(aroma),
-            SD = sd(aroma))
-datatable(coffeeTable)
-```
-
-Seeing the corelation between columns I chose from dataset. This helped me chose the variabels that I will use in my report.
+First Seeing the correlation between columns I chose from dataset. This helped me chose the variables that I will use in my prediction.
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 
-corCoffee <- cor(TestCoffeeData, method = c("pearson", "kendall", "spearman"))
-datatable(corCoffee)
+corCoffee <- cor(CoffeeData, method = c("pearson", "kendall", "spearman"))
+datatable(corCoffee)%>%
+     formatRound(columns=c('Aroma','Total.Cup.Points','Flavor','Acidity','Sweetness','Aftertaste'), digits=3)
 
 ```
-
+I found that Aroma and Flavor are highly correlated(0.813) so I choose to work with this variables.
 # Data Visualization
-
+Now I visualize variables to understand there relationship better.
 
 ## Scatter Plot 
 
-
+By plotting a Scatter plot it is more clear to see the correlation between  Aroma and Flavor since The closer the data points to make a straight line the stronger the relationship between the two variables I chose.
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
-FAP <- ggplot(TestCoffeeData, aes(x = flavor, y = aroma)) 
+FAP <- ggplot(CoffeeData, aes(x = Flavor, y = Aroma)) 
 posn_j <- position_jitter(seed = 136)
 
 FAP +
@@ -88,44 +74,64 @@ FAP +
 
 
 # Linear Regression Model
-## Flavor - Aroma
-Fit the data into Linear Regression Model (Train - Test).
+
+Since the relation for my variables is linear and they both continuous I choose the Linear Regression Model for my prediction.
+So the question now that I will try to find the answer for is 
+
+Can Flavor grade predict coffee Aroma grade?
+
+Is a coffee with good taste always has a good aroma as well?
+
+Dose Acidity will improve the prediction and model preformance?
+
+## Flavor - Aroma Model
+
+Fit the data into Linear Regression Model after split it to (Train - Test) datasets.
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 # Fitting a model 
 set.seed(136)
-gp <- runif(nrow(TestCoffeeData))
-dtrain <- subset(TestCoffeeData , gp >= 0.3)
-dtest <- subset(TestCoffeeData , gp < 0.3)
+gp <- runif(nrow(CoffeeData))
+dtrain <- subset(CoffeeData , gp >= 0.3)
+dtest <- subset(CoffeeData , gp < 0.3)
 
-model1 <- lm( aroma ~ flavor, data = dtrain)
+model1 <- lm( Aroma ~ Flavor, data = dtrain)
 
   dtestP <- predict(model1, newdata = dtest)
   dtrainP <- predict(model1, newdata = dtrain)
 
 ```
 
+### R-squared Difference
+
+To check the prediction R-squared the results are 
+For Train dataset = 0.684
+For Test dataset = 0.560
+It is close so the model is doing well so far.
+
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 # computing R-squared 
 rsq <- function(y , f) { 1 - sum((y - f)^2) / sum((y - mean(y))^2 ) }
 #rsq <- function (x, y) cor(x, y) ^ 2
-rsq(dtest$aroma,dtestP)
-rsq(dtrain$aroma,dtrainP)
+rsq(dtrain$Aroma,dtrainP)
+rsq(dtest$Aroma,dtestP)
+
 ```
+
+So R-squared difference is 0.123
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 #  R-squared difference
-rsq(dtrain$aroma,dtrainP) - rsq(dtest$aroma,dtestP)
+rsq(dtrain$Aroma,dtrainP) - rsq(dtest$Aroma,dtestP)
 ```
 
-### Model Table  
+### Model Residual Table  
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
-summary(model1)
-
-tab_model(
-  model1, show.se = TRUE, show.std = TRUE, show.stat = TRUE,
-  col.order = c("p", "stat", "est", "std.se", "se", "std.est"))
+library(pander)
+pander(model1, style='rmarkdown')
+#summary(model1)
 ```
+
 ### Plot Residual 
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
@@ -138,49 +144,63 @@ plot(model1)
 After fitting the model measure the R-squared difference between R-squared for Test data[0.5602801] and R-squared for Train data [0.6841152].
 the R-squared difference [0.1238351] which is not that bad for the model.
 
-## Flavor and Acidity - Aroma
-Now lets try the Linear Regression Model on diffrent values.
+So we can say that Flavor grade can predict coffee Aroma grade by almost 78% accuracy.
+
+
+
+
+## Flavor and Acidity - Aroma Model
+
+Now lets try the Multiple Linear Regression Model on multiple prediction variables.
 Here I used flavor and acidity to predict aroma using Linear Regression.
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 # Fitting a model 
 set.seed(136)
-gp <- runif(nrow(TestCoffeeData))
-dtrain <- subset(TestCoffeeData , gp >= 0.3)
-dtest <- subset(TestCoffeeData , gp < 0.3)
+gp <- runif(nrow(CoffeeData))
+dtrain <- subset(CoffeeData , gp >= 0.3)
+dtest <- subset(CoffeeData , gp < 0.3)
 
-model2 <- lm( aroma ~ flavor + acidity, data = dtrain)
+model2 <- lm( Aroma ~ Flavor + Acidity, data = dtrain)
 
   dtestP <- predict(model2, newdata = dtest)
   dtrainP <- predict(model2, newdata = dtrain)
 
 ```
 
+### R-squared Difference
+
+To check the prediction R-squared the results are 
+For Train dataset = 0.684
+For Test dataset = 0.560
+It is the same as model 1.
+
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 # computing R-squared 
 rsq <- function(y , f) { 1 - sum((y - f)^2) / sum((y - mean(y))^2 ) }
 #rsq <- function (x, y) cor(x, y) ^ 2
-rsq(dtest$aroma,dtestP)
-rsq(dtrain$aroma,dtrainP)
+rsq(dtrain$Aroma,dtrainP)
+rsq(dtest$Aroma,dtestP)
 ```
+
+So R-squared difference is 0.123 
+Same as model 1.
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
 #  R-squared difference
-rsq(dtrain$aroma,dtrainP) - rsq(dtest$aroma,dtestP)
+rsq(dtrain$Aroma,dtrainP) - rsq(dtest$Aroma,dtestP)
 ```
 After fitting the model measure the R-squared difference between R-squared for Test data[0.5643478] and R-squared for Train data [0.6960335].
 the R-squared difference [0.1316857] which is not that bad for the model.
 
-So, We can say that we can use flavor and acidity to predict the aroma of coffee.
+So, We can say that we can use flavor and acidity apple to predict the aroma of coffee.
 
-### Model Table
+### Model Residual Table  
 
 ```{r, echo=FALSE , warning=FALSE, message=FALSE}
-summary(model2)
-
-tab_model(
-  model2, show.se = TRUE, show.std = TRUE, show.stat = TRUE,
-  col.order = c("p", "stat", "est", "std.se", "se", "std.est"))
+library(pander)
+pander(model2, style='rmarkdown')
+#summary(model1)
 ```
 
 ### Plot Residual 
@@ -190,4 +210,12 @@ par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
 plot(model2)
 
 ```
+
+# Conclusion
+
+Yes, we can use the coffee flavor grade to predict coffee aroma grade.
+Notice that even when adding acidity to the prediction model didn't improve the prediction and model results are the same even after adding acidity to the equation.
+So using either coffee flavor grade or coffee acidity grade to predict coffee aroma grade at the end will give the same prediction percentage.
+
+
 
