@@ -6,7 +6,7 @@ This analysis is done on the coffee ratings dataset it is focused on coffee arom
 
 ## Research Questions
 
-Q-1: Do origin countries for coffee beans really affect coffee aroma grade? <br />
+1.  Do origin countries for coffee beans really affect coffee aroma grade? <br />
 Q-2: Can I create a model to predict coffee aroma grade base on Flavor grade or Acidity grade?<br />
 Q-3: Can Flavor grade predict coffee Aroma grade?<br />
 Q-4: Dose Acidity will improve the prediction and model performance?
@@ -14,10 +14,10 @@ Q-4: Dose Acidity will improve the prediction and model performance?
 
 ## Repository content
 
--Coffee Analysis using R and R Markdown.<br />
--Coffee Analysis: Create Model to predict Coffee Aroma using R and R Markdown.<br />
+* Coffee Analysis using R and R Markdown.<br />
+* Coffee Analysis: Create Model to predict Coffee Aroma using R and R Markdown.<br />
     models included:<br />
-> -Flavor - Aroma Linear Regression Model.<br />
-> -Flavor and Acidity - Aroma Multiple Linear Regression Model.<br />
+> *Flavor - Aroma Linear Regression Model.<br />
+> *Flavor and Acidity - Aroma Multiple Linear Regression Model.<br />
 
 
