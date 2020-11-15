@@ -15,7 +15,7 @@ Q-2: Can I create a model to predict coffee aroma grade base on origin country?<
 -Coffee Analysis using R and R Markdown.<br />
 -Coffee Analysis: Create Model to predict Coffee Aroma using R and R Markdown.<br />
     models included:<br />
-> - Flavor - Aroma Linear Regression Model.<br />
->>- Flavor and Acidity - Aroma Multiple Linear Regression Model.<br />
+> Flavor - Aroma Linear Regression Model.<br />
+> Flavor and Acidity - Aroma Multiple Linear Regression Model.<br />
 
 
