@@ -17,7 +17,7 @@ This analysis is done on the coffee ratings dataset it is focused on coffee arom
 * Coffee Analysis using R and R Markdown.<br />
 * Coffee Analysis: Create Model to predict Coffee Aroma using R and R Markdown.<br />
     models included:<br />
-> + Flavor - Aroma Linear Regression Model.<br />
-> * Flavor and Acidity - Aroma Multiple Linear Regression Model.<br />
+ + Flavor - Aroma Linear Regression Model.<br />
+ * Flavor and Acidity - Aroma Multiple Linear Regression Model.<br />
 
 
