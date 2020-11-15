@@ -46,7 +46,9 @@ datatable(corCoffee)%>%
 
 ```
 I found that Aroma and Flavor are highly correlated(0.813) so I choose to work with this variables.
+
 # Data Visualization
+
 Now I visualize variables to understand there relationship better.
 
 ## Scatter Plot 
