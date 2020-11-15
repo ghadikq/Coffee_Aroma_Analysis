@@ -8,6 +8,8 @@ This analysis is done on the coffee ratings dataset it is focused on coffee arom
 
 Q-1: Do origin countries for coffee beans really affect coffee aroma grade? <br />
 Q-2: Can I create a model to predict coffee aroma grade base on Flavor grade or Acidity grade?<br />
+Q-3: Can Flavor grade predict coffee Aroma grade?
+Q-4: Dose Acidity will improve the prediction and model performance?
 
 
 ## Repository content
