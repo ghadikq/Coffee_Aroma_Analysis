@@ -23,7 +23,7 @@ library(sjPlot)
 library(sjmisc)
 library(sjlabelled)
 
-coffee_ratings <- read_csv('C://Users//ghadi//Documents//DataSet//merged_data_cleaned.csv')
+coffee_ratings <- read_csv('data///merged_data_cleaned.csv')
 CoffeeData <- coffee_ratings %>% 
   select(Aroma,Total.Cup.Points,Flavor,Acidity,Sweetness,Aftertaste)
 

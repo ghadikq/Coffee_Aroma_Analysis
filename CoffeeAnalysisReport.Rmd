@@ -18,7 +18,7 @@ library(tidyverse)
 library(DT)
 library(RColorBrewer)
 
-coffee_ratings <- read_csv('C://Users//ghadi//Documents//DataSet//merged_data_cleaned.csv')
+coffee_ratings <- read_csv('data///merged_data_cleaned.csv')
 ```
 This report is done on the coffee ratings dataset it contains reviews of 1312 arabica and 28 robusta coffee beans from the Coffee Quality Institute trained reviewers. The features include and used in this report are Aroma grade one of the quality measures and Country of Origin from farm metadata that tells us where the bean came from.
 
