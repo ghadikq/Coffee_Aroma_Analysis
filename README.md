@@ -1,6 +1,6 @@
 # Coffee Aroma Analysis
 
-## Stage 2: Developing a research question and analysis
+## Developing a research question and analysis
 
 This analysis is done on the coffee ratings dataset it is focused on coffee aroma grade and origin country for coffee beans to answer the research questions listed here.  
 
